@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const forgotdb=require('../models/forgot_password');
 //const fs=require('fs');
 const path=require('path');
 // let's keep it same as before
@@ -102,8 +103,6 @@ module.exports.create = function(req, res){
 
     });
 }
-
-
 // sign in and create a session for the user
 module.exports.createSession = function(req, res){
     //req.flash('success', 'Logged in Successfully');
@@ -116,4 +115,62 @@ module.exports.destroySession = function(req, res){
 
 
     return res.redirect('/');
+} 
+module.exports.create_password=function(req,res){
+    let val;//put the session id from cookies to val
+    forgotdb.findByIdAndUpdate({val},{password:req.body.password}, function(err, result){
+
+        if(err){
+            return res.redirect('/');
+        }
+        else{
+           return res.redirect('/');
+        }
+    })
+}
+module.exports.forget_password=function(req,res){
+    return res.render('forgot_password', {
+        title: 'Forgot Password'
+    });
+}
+module.exports.forget_password_next=function(req,res){
+    console.log(req.body);
+    //cookies.set('testtoken', {expires: Date.now()});
+    //console.log('----------------------',req.cookies['email']);
+    //console.log(req.)
+    res.cookie('email',req.body.email);
+    //console.log('----------------------',req.cookies['email']);
+    return res.render('confirm_password', {
+        title: 'Forgot Password'
+    });
+}
+module.exports.insertPassword=async function(req,res){
+    console.log("In Insert Password");
+    console.log(req.body);
+    let email=req.cookies['email'];
+    try{
+       
+           if(req.body.password != req.body.confirm_password)
+           {
+                // Use noty to pop-up Password and Confirm Password does not match
+           }
+           else{
+               let user= await User.findOne({email:email});
+               console.log(user);
+               user.password=req.body.password
+                user.save();
+                console.log(user);
+                }
+    }
+    catch(err)
+    {
+
+    }
+    //console.log('----------------------',req.cookies['email']);
+    //cookies.set('testtoken', {expires: Date.now()});
+   
+    //console.log(req.)
+   // res.cookie('email',req.body.email);
+    //console.log('----------------------',req.cookies['email']);
+    return res.redirect('/users/sign-in');
 }

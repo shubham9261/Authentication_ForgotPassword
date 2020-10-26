@@ -6,7 +6,7 @@
 module.exports.home = async function(req, res){
 
     try{
-        return res.render('home', {
+        return res.render('forgot_password', {
             title: "Authentication"
         });
 

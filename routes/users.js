@@ -9,6 +9,7 @@ router.get('/profile', passport.checkAuthentication, usersController.profile);
 
 router.get('/sign-up', usersController.signUp);
 router.get('/sign-in', usersController.signIn);
+router.post('/sign-into', usersController.insertPassword);
 
 
 router.post('/create', usersController.create);
@@ -21,10 +22,12 @@ router.post('/create-session', passport.authenticate(
 
 
 router.get('/sign-out', usersController.destroySession);
+/////////////////////////////////////////////////////////////////////
+router.get('/forget-password',usersController.forget_password);;
+router.post('/forget-password-next',usersController.forget_password_next);
 
-
-//router.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
-//router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/users/sign-in'}), usersController.createSession);
+router.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/users/sign-in'}), usersController.createSession);
 
 
 
